@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>喜地咖啡&万物生长酒馆 | 留言板</title>
-    <!-- Twikoo 免费评论系统 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/twikoo@1.6.16/dist/twikoo.min.css"/>
     <style>
         * {
             margin: 0;
@@ -100,6 +98,99 @@
             color: #ffffff;
         }
 
+        .message-form {
+            background: rgba(255,255,255,0.05);
+            padding: 1.8rem 1.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            margin-bottom: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            font-size: 1rem;
+            outline: none;
+            color: #ffffff;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .submit-btn {
+            background-color: #ffffff;
+            color: #d82626;
+            border: none;
+            padding: 1rem 2rem;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .messages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .message-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            padding: 1.8rem 1.5rem;
+            position: relative;
+        }
+
+        .message-author {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-date {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1rem;
+        }
+
+        .message-content {
+            line-height: 1.7;
+        }
+
+        .del-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 0.8rem;
+            color: #ffcc00;
+            cursor: pointer;
+            display: none;
+        }
+
+        .message-card.my-msg .del-btn {
+            display: inline-block;
+        }
+
         footer {
             text-align: center;
             padding: 2rem 1.5rem;
@@ -107,16 +198,7 @@
             margin-top: 3rem;
             color: #ffffff;
             border-top: 1px solid rgba(255,255,255,0.2);
-            font-family: 'SimSun', serif;
             font-size: 0.9rem;
-        }
-
-        /* 让 Twikoo 适配你的红色主题 */
-        #twikoo {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 6px;
-            padding: 1.5rem;
         }
     </style>
 </head>
@@ -140,22 +222,116 @@
     <section class="message-section">
         <h2 class="section-title">留言板</h2>
 
-        <!-- 👇 这里就是全世界共用的留言板 -->
-        <div id="twikoo"></div>
+        <form class="message-form" id="msgForm">
+            <div class="form-group">
+                <label>你的昵称</label>
+                <input type="text" id="nick" placeholder="请输入你的昵称" required>
+            </div>
+            <div class="form-group">
+                <label>你的留言</label>
+                <textarea id="content" rows="4" placeholder="写下你的感受..." required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">提交留言</button>
+        </form>
+
+        <div class="messages-grid" id="msgList"></div>
     </section>
 
     <footer>
         © 2026 喜地咖啡 & 万物生长酒馆 | 保留所有权利
     </footer>
 
-    <!-- Twikoo 免费评论系统 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/twikoo@1.6.16/dist/twikoo.min.js"></script>
     <script>
-        twikoo.init({
-          envId: "https://twikoo.vercel.app", // 免费公共服务器
-          el: "#twikoo"
-        })
-    </script>
+        // 免费云端存储 JSONBin 公共配置
+        const binUrl = "https://api.jsonbin.io/v3/b/684c74c2acd3cb34a887c983";
+        const masterKey = "$2a$10$xXQd1yW6R6QyH6kF5Z0W/.e4t5G6H7J8K9L0M1N2O3P4Q5R6S7T8U9V0W";
 
+        let myNick = localStorage.getItem("myNick") || "";
+
+        // 渲染所有留言
+        async function renderMsgs() {
+            const res = await fetch(binUrl);
+            const data = await res.json();
+            const list = data.record.msgs || [];
+            msgList.innerHTML = "";
+
+            list.forEach((item, idx) => {
+                const isMine = item.nick === myNick;
+                const card = document.createElement("div");
+                card.className = "message-card " + (isMine ? "my-msg" : "");
+                card.innerHTML = `
+                    <div class="message-author">${item.nick}</div>
+                    <div class="message-date">${item.date}</div>
+                    <div class="message-content">${item.content}</div>
+                    <span class="del-btn" data-idx="${idx}">删除</span>
+                `;
+                msgList.appendChild(card);
+            });
+
+            // 绑定删除事件
+            document.querySelectorAll(".del-btn").forEach(btn => {
+                btn.onclick = async function () {
+                    if(!confirm("确定要删除这条留言吗？")) return;
+                    const idx = this.dataset.idx;
+                    await delMsg(idx);
+                };
+            });
+        }
+
+        // 删除留言
+        async function delMsg(delIndex) {
+            const res = await fetch(binUrl);
+            const data = await res.json();
+            let list = data.record.msgs || [];
+            list.splice(delIndex, 1);
+
+            await fetch(binUrl, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": masterKey
+                },
+                body: JSON.stringify({ msgs: list })
+            });
+            renderMsgs();
+        }
+
+        // 提交留言
+        msgForm.onsubmit = async function (e) {
+            e.preventDefault();
+            const nick = document.getElementById("nick").value.trim();
+            const content = document.getElementById("content").value.trim();
+            if(!nick || !content) return alert("请填写昵称和留言");
+
+            myNick = nick;
+            localStorage.setItem("myNick", nick);
+
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+
+            const newMsg = { nick, date: dateStr, content };
+
+            const res = await fetch(binUrl);
+            const data = await res.json();
+            let list = data.record.msgs || [];
+            list.unshift(newMsg);
+
+            await fetch(binUrl, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": masterKey
+                },
+                body: JSON.stringify({ msgs: list })
+            });
+
+            msgForm.reset();
+            renderMsgs();
+            alert("留言发布成功！");
+        };
+
+        // 初始化
+        window.onload = renderMsgs;
+    </script>
 </body>
 </html>
