@@ -18,31 +18,37 @@
             line-height: 1.6;
         }
 
+        /* 手机自适应导航 */
         .navbar {
             display: flex;
-            justify-content: space-between;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
             align-items: center;
-            padding: 1.2rem 4rem;
+            padding: 1rem 1.5rem;
             background-color: #d82626;
             border-bottom: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
         }
 
         .logo {
             color: #ffffff;
             font-weight: 900;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-family: 'Times New Roman', serif;
         }
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .nav-links a {
             color: #ffffff;
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
             font-weight: 500;
         }
@@ -51,14 +57,15 @@
             color: #ffcc00;
         }
 
+        /* 手机端横幅自适应 */
         .hero {
-            padding: 5rem 4rem;
+            padding: 3rem 1.5rem;
             text-align: center;
             background-color: #d82626;
         }
 
         .hero h1 {
-            font-size: 3rem;
+            font-size: clamp(1.8rem, 5vw, 3rem);
             font-weight: 900;
             margin-bottom: 1rem;
             color: #ffffff;
@@ -70,7 +77,7 @@
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1rem;
             max-width: 700px;
             margin: 0 auto;
             color: #ffffff;
@@ -79,12 +86,12 @@
 
         .message-section {
             max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 2rem;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
         }
 
         .section-title {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 4vw, 2rem);
             font-weight: 900;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
@@ -93,16 +100,17 @@
             color: #ffffff;
         }
 
+        /* 表单手机适配 */
         .message-form {
             background: rgba(255,255,255,0.05);
-            padding: 2.5rem;
+            padding: 1.8rem 1.5rem;
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 6px;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         .form-group label {
@@ -135,7 +143,8 @@
             background-color: #ffffff;
             color: #d82626;
             border: none;
-            padding: 1rem 2.5rem;
+            padding: 1rem 2rem;
+            width: 100%;
             font-size: 1rem;
             font-weight: bold;
             text-transform: uppercase;
@@ -147,17 +156,18 @@
             background-color: #f1f1f1;
         }
 
+        /* 手机端留言卡片自动单列 */
         .messages-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
         .message-card {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 6px;
-            padding: 2rem;
+            padding: 1.8rem 1.5rem;
             transition: transform 0.3s;
         }
 
@@ -188,12 +198,13 @@
 
         footer {
             text-align: center;
-            padding: 3rem 2rem;
+            padding: 2rem 1.5rem;
             background-color: #d82626;
-            margin-top: 4rem;
+            margin-top: 3rem;
             color: #ffffff;
             border-top: 1px solid rgba(255,255,255,0.2);
             font-family: 'SimSun', serif;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -252,7 +263,6 @@
         © 2026 喜地咖啡 & 万物生长酒馆 | 保留所有权利
     </footer>
 
-    <!-- 真正能提交留言的代码 -->
     <script>
         const form = document.getElementById('msgForm');
         const msgList = document.getElementById('msgList');
