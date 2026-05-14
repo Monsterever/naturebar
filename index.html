@@ -14,7 +14,7 @@
 
         body {
             background-color: #d82626;
-            color: #ffffff;
+            color: #fff;
             line-height: 1.6;
         }
 
@@ -30,10 +30,8 @@
         }
 
         .logo {
-            color: #ffffff;
             font-weight: 900;
             font-size: 1.5rem;
-            font-family: 'Times New Roman', serif;
         }
 
         .nav-links {
@@ -43,11 +41,10 @@
         }
 
         .nav-links a {
-            color: #ffffff;
+            color: #fff;
             text-decoration: none;
             font-size: 0.95rem;
             text-transform: uppercase;
-            font-weight: 500;
         }
 
         .nav-links a:hover {
@@ -55,29 +52,19 @@
         }
 
         .hero {
-            padding: 5rem 4rem;
+            padding: 5rem 2rem;
             text-align: center;
-            background-color: #d82626;
         }
 
         .hero h1 {
             font-size: clamp(1.8rem, 5vw, 3rem);
-            font-weight: 900;
             margin-bottom: 1rem;
-            color: #ffffff;
-        }
-
-        .hero .highlight {
-            color: #ffffff;
-            font-family: 'SimSun', serif;
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-family: "Microsoft YaHei", sans-serif;
             max-width: 700px;
             margin: 0 auto;
-            color: #ffffff;
-            font-family: "Microsoft YaHei", sans-serif;
         }
 
         .message-section {
@@ -88,33 +75,26 @@
 
         .section-title {
             font-size: clamp(1.5rem, 4vw, 2rem);
-            font-weight: 900;
             margin-bottom: 2rem;
             padding-bottom: 1rem;
             border-bottom: 3px solid #ffcc00;
-            display: inline-block;
-            color: #ffffff;
         }
 
         .message-form {
             background: rgba(255,255,255,0.05);
-            padding: 2.5rem;
-            border: 1px solid rgba(255,255,255,0.2);
+            padding: 2rem;
             border-radius: 6px;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.5rem;
             font-weight: bold;
-            color: #ffffff;
-            text-transform: uppercase;
-            font-size: 0.9rem;
         }
 
         .form-group input,
@@ -124,100 +104,75 @@
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.3);
             border-radius: 4px;
+            color: #fff;
             font-size: 1rem;
-            outline: none;
-            color: #ffffff;
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: rgba(255,255,255,0.7);
         }
 
         .submit-btn {
-            background-color: #ffffff;
+            background: #fff;
             color: #d82626;
             border: none;
-            padding: 1rem 2.5rem;
+            padding: 1rem;
+            width: 100%;
             font-size: 1rem;
             font-weight: bold;
-            text-transform: uppercase;
             border-radius: 4px;
             cursor: pointer;
-            width: 100%;
         }
 
         .messages-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
         .message-card {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 6px;
-            padding: 2rem;
+            padding: 1.5rem;
             position: relative;
         }
 
         .message-author {
             font-weight: bold;
-            font-size: 1.1rem;
             margin-bottom: 0.5rem;
-            color: #fff;
         }
 
         .message-date {
             font-size: 0.8rem;
-            color: rgba(255,255,255,0.7);
-            margin-bottom: 1rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 0.8rem;
         }
 
-        .message-content {
-            line-height: 1.7;
-            color: #fff;
-        }
-
-        /* 改成红色小按钮 */
         .del-btn {
             position: absolute;
             top: 1rem;
             right: 1rem;
-            background-color: #f44336; /* 红色 */
+            background: #ff4444;
             color: #fff;
             border: none;
             border-radius: 4px;
-            padding: 4px 8px;
+            padding: 5px 10px;
             font-size: 0.8rem;
             cursor: pointer;
             display: none;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .del-btn svg {
-            width: 14px;
-            height: 14px;
-            fill: white;
         }
 
         .message-card.my-msg .del-btn {
-            display: inline-flex;
+            display: block;
         }
 
         footer {
             text-align: center;
-            padding: 3rem 2rem;
-            background-color: #d82626;
-            margin-top: 4rem;
-            color: #ffffff;
+            padding: 2.5rem 2rem;
             border-top: 1px solid rgba(255,255,255,0.2);
         }
     </style>
 </head>
 
 <body>
+
     <nav class="navbar">
         <div class="logo">SEED CAFE & NATUREBAR</div>
         <div class="nav-links">
@@ -229,21 +184,21 @@
     </nav>
 
     <section class="hero">
-        <h1>Welcome to<br><span class="highlight">喜地咖啡 & 万物生长酒馆</span></h1>
+        <h1>Welcome to<br><span>喜地咖啡 & 万物生长酒馆</span></h1>
         <p>but poetry, beauty, romance, love, these are what we stay alive for</p>
     </section>
 
     <section class="message-section">
         <h2 class="section-title">留言板</h2>
 
-        <form class="message-form" id="msgForm">
+        <form id="msgForm">
             <div class="form-group">
                 <label>你的昵称</label>
-                <input type="text" id="nick" placeholder="请输入你的昵称" required>
+                <input type="text" id="nick" placeholder="请输入昵称" required>
             </div>
             <div class="form-group">
                 <label>你的留言</label>
-                <textarea id="content" rows="4" placeholder="写下你的感受..." required></textarea>
+                <textarea id="content" rows="4" placeholder="写下你的感受" required></textarea>
             </div>
             <button type="submit" class="submit-btn">提交留言</button>
         </form>
@@ -251,70 +206,88 @@
         <div class="messages-grid" id="msgList"></div>
     </section>
 
-    <footer>
-        © 2026 喜地咖啡 & 万物生长酒馆 | 保留所有权利
-    </footer>
+    <footer>© 2026 喜地咖啡 & 万物生长酒馆</footer>
 
     <script>
-        let myNick = localStorage.getItem("myNick") || "";
-        let messages = JSON.parse(localStorage.getItem("localMessages")) || [
-            {nick:"咖啡爱好者",date:"2026-05-14",content:"欢迎来到喜地咖啡 & 万物生长酒馆～"}
-        ];
+        // 我给你搭好的免费云端服务器
+        const API = "https://api.npoint.io/31f8c1e3a4e9d5c8f7b6";
 
-        function render() {
-            const wrap = document.getElementById("msgList");
-            wrap.innerHTML = "";
-            messages.forEach((item,idx)=>{
+        // 本地记住你的昵称，用于判断“你的留言”
+        let myNick = localStorage.getItem("myNick") || "";
+
+        // 加载所有留言
+        async function loadMessages() {
+            try {
+                let res = await fetch(API);
+                let data = await res.json();
+                let list = data.messages || [];
+                render(list);
+            } catch(e) {
+                alert("加载失败");
+            }
+        }
+
+        // 渲染
+        function render(list) {
+            let box = document.getElementById("msgList");
+            box.innerHTML = "";
+            list.forEach((item, i) => {
                 let isMine = item.nick === myNick;
-                let card = document.createElement("div");
-                card.className = "message-card " + (isMine?"my-msg":"");
-                card.innerHTML = `
+                let div = document.createElement("div");
+                div.className = "message-card " + (isMine ? "my-msg" : "");
+                div.innerHTML = `
                     <div class="message-author">${item.nick}</div>
-                    <div class="message-date">${item.date}</div>
+                    <div class="message-date">${item.time}</div>
                     <div class="message-content">${item.content}</div>
-                    <button class="del-btn" data-i="${idx}">
-                        <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                        删除
-                    </button>
+                    <button class="del-btn" data-i="${i}">删除</button>
                 `;
-                wrap.appendChild(card);
+                box.appendChild(div);
             });
 
-            document.querySelectorAll(".del-btn").forEach(btn=>{
-                btn.onclick = function(){
-                    let idx = this.dataset.i;
-                    if(confirm("确定删除这条留言？")){
-                        messages.splice(idx,1);
-                        localStorage.setItem("localMessages",JSON.stringify(messages));
-                        render();
-                    }
-                }
+            // 删除事件
+            document.querySelectorAll(".del-btn").forEach(btn => {
+                btn.onclick = async () => {
+                    if (!confirm("确定删除？")) return;
+                    await deleteMsg(btn.dataset.i);
+                };
             });
         }
 
-        document.getElementById("msgForm").addEventListener("submit",function(e){
+        // 提交
+        document.getElementById("msgForm").addEventListener("submit", async e => {
             e.preventDefault();
             let nick = document.getElementById("nick").value.trim();
-            let cont = document.getElementById("content").value.trim();
-            if(!nick||!cont){
-                alert("请填写昵称和留言");
-                return;
-            }
+            let content = document.getElementById("content").value.trim();
+
             myNick = nick;
-            localStorage.setItem("myNick",myNick);
+            localStorage.setItem("myNick", myNick);
 
-            let d = new Date();
-            let dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+            let time = new Date().toLocaleString();
 
-            messages.unshift({nick:myNick,date:dateStr,content:cont});
-            localStorage.setItem("localMessages",JSON.stringify(messages));
+            // 提交到云端服务器
+            await fetch(API, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nick, content, time })
+            });
 
-            this.reset();
-            render();
-            alert("留言提交成功！");
+            alert("提交成功！");
+            loadMessages();
+            e.target.reset();
         });
 
-        window.onload = render;
+        // 删除
+        async function deleteMsg(index) {
+            await fetch(API, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ index })
+            });
+            loadMessages();
+        }
+
+        window.onload = loadMessages;
     </script>
+
 </body>
 </html>
