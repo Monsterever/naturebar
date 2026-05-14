@@ -29,8 +29,11 @@
         .message-card.my-msg .del-btn{display:block;}
         footer{text-align:center;padding:2.5rem 2rem;border-top:1px solid rgba(255,255,255,0.2);}
     </style>
+    <!-- 腾讯云开发 SDK -->
+    <script src="https://imgcache.qq.com/qcloud/tcbjs/1.10.8/tcb.js"></script>
 </head>
 <body>
+
 <nav class="navbar">
     <div class="logo">SEED CAFE & NATUREBAR</div>
     <div class="nav-links">
@@ -40,85 +43,94 @@
         <a href="#">Message</a>
     </div>
 </nav>
+
 <section class="hero">
     <h1>Welcome to<br>喜地咖啡 & 万物生长酒馆</h1>
     <p>but poetry, beauty, romance, love, these are what we stay alive for</p>
 </section>
+
 <section class="message-section">
     <h2 class="section-title">留言板</h2>
     <form id="msgForm" class="message-form">
-        <div class="form-group"><label>你的昵称</label><input type="text" id="nick" placeholder="请输入昵称" required></div>
-        <div class="form-group"><label>你的留言</label><textarea id="content" rows="4" placeholder="写下你的感受" required></textarea></div>
+        <div class="form-group">
+            <label>你的昵称</label>
+            <input type="text" id="nick" placeholder="请输入昵称" required>
+        </div>
+        <div class="form-group">
+            <label>你的留言</label>
+            <textarea id="content" rows="4" placeholder="写下你的感受" required></textarea>
+        </div>
         <button type="submit" class="submit-btn">提交留言</button>
     </form>
     <div class="messages-grid" id="msgList"></div>
 </section>
+
 <footer>© 2026 喜地咖啡 & 万物生长酒馆</footer>
 
 <script>
-// ====== 后端地址（等下我给你换成你自己的）======
-const PB_URL = "https://你的后端地址.onrender.com"; // 等下替换
-const COL = "messages";
+// ========== 已填入你的腾讯云环境ID ==========
+const app = tcb.init({
+  env: "naturebar-msg-d4g9g46hje6b34418"
+});
+const db = app.database();
 
-let myNick = localStorage.getItem("myNick") || "";
+// 匿名登录
+app.auth().anonymousAuthProvider().signIn().then(() => {
+  loadMessages();
+});
 
 // 加载留言
 async function loadMessages() {
-  let res = await fetch(`${PB_URL}/api/collections/${COL}/records?sort=-created`);
-  let list = await res.json();
-  let msgs = list.items || [];
-  render(msgs);
+  const res = await db.collection("messages").orderBy("createdAt", "desc").get();
+  render(res.data);
 }
 
-// 渲染
+// 渲染页面
 function render(msgs) {
-  let container = document.getElementById("msgList");
-  container.innerHTML = "";
+  const list = document.getElementById("msgList");
+  list.innerHTML = "";
+  const uid = app.auth().currentUser?.uid;
+
   msgs.forEach(item => {
-    let isMine = item.nick === myNick;
-    let card = document.createElement("div");
+    const isMine = item._openid === uid;
+    const card = document.createElement("div");
     card.className = "message-card " + (isMine ? "my-msg" : "");
     card.innerHTML = `
       <div class="message-author">${item.nick}</div>
-      <div class="message-date">${item.created.slice(0,10)}</div>
+      <div class="message-date">${new Date(item.createdAt).toLocaleDateString()}</div>
       <div class="message-content">${item.content}</div>
-      <button class="del-btn" data-id="${item.id}">删除</button>
+      <button class="del-btn" data-id="${item._id}">删除</button>
     `;
-    container.appendChild(card);
+    list.appendChild(card);
   });
 
+  // 删除按钮事件
   document.querySelectorAll(".del-btn").forEach(btn => {
     btn.onclick = async () => {
-      if (!confirm("确定删除？")) return;
-      await fetch(`${PB_URL}/api/collections/${COL}/records/${btn.dataset.id}`, {
-        method: "DELETE"
-      });
+      if (!confirm("确定删除这条留言？")) return;
+      await db.collection("messages").doc(btn.dataset.id).remove();
       loadMessages();
     };
   });
 }
 
-// 提交
+// 提交留言
 document.getElementById("msgForm").addEventListener("submit", async e => {
   e.preventDefault();
-  let nick = document.getElementById("nick").value.trim();
-  let content = document.getElementById("content").value.trim();
-  myNick = nick;
-  localStorage.setItem("myNick", myNick);
+  const nick = document.getElementById("nick").value.trim();
+  const content = document.getElementById("content").value.trim();
 
-  await fetch(`${PB_URL}/api/collections/${COL}/records`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nick, content })
+  await db.collection("messages").add({
+    nick,
+    content,
+    createdAt: new Date()
   });
 
   alert("提交成功！");
   e.target.reset();
   loadMessages();
 });
-
-// 页面加载
-window.onload = loadMessages;
 </script>
+
 </body>
 </html>
