@@ -18,7 +18,6 @@
             line-height: 1.6;
         }
 
-        /* 修复导航栏布局 */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -41,7 +40,6 @@
             display: flex;
             gap: 2.5rem;
             flex-wrap: wrap;
-            justify-content: center;
         }
 
         .nav-links a {
@@ -149,10 +147,6 @@
             width: 100%;
         }
 
-        .submit-btn:hover {
-            background-color: #f1f1f1;
-        }
-
         .messages-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -165,20 +159,13 @@
             border-radius: 6px;
             padding: 2rem;
             position: relative;
-            transition: transform 0.3s;
-        }
-
-        .message-card:hover {
-            transform: translateY(-5px);
-            border-left: 4px solid #ffcc00;
         }
 
         .message-author {
             font-weight: bold;
-            color: #ffffff;
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
-            font-family: 'SimSun', serif;
+            color: #fff;
         }
 
         .message-date {
@@ -188,9 +175,8 @@
         }
 
         .message-content {
-            color: #ffffff;
             line-height: 1.7;
-            font-family: 'SimSun', serif;
+            color: #fff;
         }
 
         .del-btn {
@@ -214,7 +200,6 @@
             margin-top: 4rem;
             color: #ffffff;
             border-top: 1px solid rgba(255,255,255,0.2);
-            font-family: 'SimSun', serif;
         }
     </style>
 </head>
@@ -238,7 +223,6 @@
     <section class="message-section">
         <h2 class="section-title">留言板</h2>
 
-        <!-- 修复表单ID -->
         <form class="message-form" id="msgForm">
             <div class="form-group">
                 <label>你的昵称</label>
@@ -259,96 +243,65 @@
     </footer>
 
     <script>
-        // 免费云端存储 JSONBin 公共配置
-        const binUrl = "https://api.jsonbin.io/v3/b/684c74c2acd3cb34a887c983";
-        const masterKey = "$2a$10$xXQd1yW6R6QyH6kF5Z0W/.e4t5G6H7J8K9L0M1N2O3P4Q5R6S7T8U9V0W";
-
+        // 本地存储，先保证能用、不报错、可提交、可删自己
         let myNick = localStorage.getItem("myNick") || "";
+        let messages = JSON.parse(localStorage.getItem("localMessages")) || [
+            {nick:"咖啡爱好者",date:"2026-05-14",content:"欢迎来到喜地咖啡 & 万物生长酒馆～"}
+        ];
 
-        // 渲染所有留言
-        async function renderMsgs() {
-            const res = await fetch(binUrl);
-            const data = await res.json();
-            const list = data.record.msgs || [];
-            msgList.innerHTML = "";
-
-            list.forEach((item, idx) => {
-                const isMine = item.nick === myNick;
-                const card = document.createElement("div");
-                card.className = "message-card " + (isMine ? "my-msg" : "");
+        function render() {
+            const wrap = document.getElementById("msgList");
+            wrap.innerHTML = "";
+            messages.forEach((item,idx)=>{
+                let isMine = item.nick === myNick;
+                let card = document.createElement("div");
+                card.className = "message-card " + (isMine?"my-msg":"");
                 card.innerHTML = `
                     <div class="message-author">${item.nick}</div>
                     <div class="message-date">${item.date}</div>
                     <div class="message-content">${item.content}</div>
-                    <span class="del-btn" data-idx="${idx}">删除</span>
+                    <span class="del-btn" data-i="${idx}">删除</span>
                 `;
-                msgList.appendChild(card);
+                wrap.appendChild(card);
             });
 
-            // 绑定删除事件
-            document.querySelectorAll(".del-btn").forEach(btn => {
-                btn.onclick = async function () {
-                    if(!confirm("确定要删除这条留言吗？")) return;
-                    const idx = this.dataset.idx;
-                    await delMsg(idx);
-                };
+            // 删除
+            document.querySelectorAll(".del-btn").forEach(btn=>{
+                btn.onclick = function(){
+                    let idx = this.dataset.i;
+                    if(confirm("确定删除？")){
+                        messages.splice(idx,1);
+                        localStorage.setItem("localMessages",JSON.stringify(messages));
+                        render();
+                    }
+                }
             });
         }
 
-        // 删除留言
-        async function delMsg(delIndex) {
-            const res = await fetch(binUrl);
-            const data = await res.json();
-            let list = data.record.msgs || [];
-            list.splice(delIndex, 1);
-
-            await fetch(binUrl, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Master-Key": masterKey
-                },
-                body: JSON.stringify({ msgs: list })
-            });
-            renderMsgs();
-        }
-
-        // 提交留言（修复事件绑定）
-        document.getElementById("msgForm").onsubmit = async function (e) {
+        // 提交
+        document.getElementById("msgForm").addEventListener("submit",function(e){
             e.preventDefault();
-            const nick = document.getElementById("nick").value.trim();
-            const content = document.getElementById("content").value.trim();
-            if(!nick || !content) return alert("请填写昵称和留言");
-
+            let nick = document.getElementById("nick").value.trim();
+            let cont = document.getElementById("content").value.trim();
+            if(!nick||!cont){
+                alert("请填写昵称和留言");
+                return;
+            }
             myNick = nick;
-            localStorage.setItem("myNick", nick);
+            localStorage.setItem("myNick",myNick);
 
-            const now = new Date();
-            const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+            let d = new Date();
+            let dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 
-            const newMsg = { nick, date: dateStr, content };
-
-            const res = await fetch(binUrl);
-            const data = await res.json();
-            let list = data.record.msgs || [];
-            list.unshift(newMsg);
-
-            await fetch(binUrl, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Master-Key": masterKey
-                },
-                body: JSON.stringify({ msgs: list })
-            });
+            messages.unshift({nick:myNick,date:dateStr,content:cont});
+            localStorage.setItem("localMessages",JSON.stringify(messages));
 
             this.reset();
-            renderMsgs();
-            alert("留言发布成功！");
-        };
+            render();
+            alert("留言提交成功！");
+        });
 
-        // 初始化
-        window.onload = renderMsgs;
+        window.onload = render;
     </script>
 </body>
 </html>
