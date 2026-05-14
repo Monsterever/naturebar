@@ -5,289 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>喜地咖啡&万物生长酒馆 | 留言板</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Times New Roman', 'SimSun', serif;
-        }
-
-        body {
-            background-color: #d82626;
-            color: #fff;
-            line-height: 1.6;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 4rem;
-            background-color: #d82626;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo {
-            font-weight: 900;
-            font-size: 1.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-        }
-
-        .nav-links a:hover {
-            color: #ffcc00;
-        }
-
-        .hero {
-            padding: 5rem 2rem;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: clamp(1.8rem, 5vw, 3rem);
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-family: "Microsoft YaHei", sans-serif;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .message-section {
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 2rem;
-        }
-
-        .section-title {
-            font-size: clamp(1.5rem, 4vw, 2rem);
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid #ffcc00;
-        }
-
-        .message-form {
-            background: rgba(255,255,255,0.05);
-            padding: 2rem;
-            border-radius: 6px;
-            margin-bottom: 3rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 4px;
-            color: #fff;
-            font-size: 1rem;
-        }
-
-        .submit-btn {
-            background: #fff;
-            color: #d82626;
-            border: none;
-            padding: 1rem;
-            width: 100%;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .messages-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .message-card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 6px;
-            padding: 1.5rem;
-            position: relative;
-        }
-
-        .message-author {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .message-date {
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 0.8rem;
-        }
-
-        .del-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #ff4444;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 5px 10px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            display: none;
-        }
-
-        .message-card.my-msg .del-btn {
-            display: block;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2.5rem 2rem;
-            border-top: 1px solid rgba(255,255,255,0.2);
-        }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Times New Roman',SimSun,serif;}
+        body{background:#d82626;color:#fff;line-height:1.6;}
+        .navbar{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 4rem;border-bottom:1px solid rgba(255,255,255,0.2);flex-wrap:wrap;gap:1rem;}
+        .logo{font-weight:900;font-size:1.5rem;}
+        .nav-links{display:flex;gap:2.5rem;flex-wrap:wrap;}
+        .nav-links a{color:#fff;text-decoration:none;font-size:0.95rem;text-transform:uppercase;}
+        .nav-links a:hover{color:#ffcc00;}
+        .hero{padding:5rem 2rem;text-align:center;}
+        .hero h1{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:1rem;}
+        .message-section{max-width:1200px;margin:4rem auto;padding:0 2rem;}
+        .section-title{font-size:clamp(1.5rem,4vw,2rem);margin-bottom:2rem;padding-bottom:1rem;border-bottom:3px solid #ffcc00;display:inline-block;}
+        .message-form{background:rgba(255,255,255,0.05);padding:2rem;border-radius:6px;margin-bottom:3rem;}
+        .form-group{margin-bottom:1.2rem;}
+        .form-group label{display:block;margin-bottom:0.5rem;font-weight:bold;}
+        .form-group input,.form-group textarea{width:100%;padding:1rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);border-radius:4px;color:#fff;font-size:1rem;}
+        .submit-btn{background:#fff;color:#d82626;border:none;padding:1rem;width:100%;font-weight:bold;border-radius:4px;cursor:pointer;}
+        .messages-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;}
+        .message-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);border-radius:6px;padding:1.5rem;position:relative;}
+        .message-author{font-weight:bold;margin-bottom:0.5rem;}
+        .message-date{font-size:0.8rem;color:rgba(255,255,255,0.6);margin-bottom:0.8rem;}
+        .del-btn{position:absolute;top:1rem;right:1rem;background:#ff4444;color:#fff;border:none;border-radius:4px;padding:5px 10px;font-size:0.8rem;cursor:pointer;display:none;}
+        .message-card.my-msg .del-btn{display:block;}
+        footer{text-align:center;padding:2.5rem 2rem;border-top:1px solid rgba(255,255,255,0.2);}
     </style>
 </head>
-
 <body>
+<nav class="navbar">
+    <div class="logo">SEED CAFE & NATUREBAR</div>
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Menu</a>
+        <a href="#">About</a>
+        <a href="#">Message</a>
+    </div>
+</nav>
+<section class="hero">
+    <h1>Welcome to<br>喜地咖啡 & 万物生长酒馆</h1>
+    <p>but poetry, beauty, romance, love, these are what we stay alive for</p>
+</section>
+<section class="message-section">
+    <h2 class="section-title">留言板</h2>
+    <form id="msgForm" class="message-form">
+        <div class="form-group"><label>你的昵称</label><input type="text" id="nick" placeholder="请输入昵称" required></div>
+        <div class="form-group"><label>你的留言</label><textarea id="content" rows="4" placeholder="写下你的感受" required></textarea></div>
+        <button type="submit" class="submit-btn">提交留言</button>
+    </form>
+    <div class="messages-grid" id="msgList"></div>
+</section>
+<footer>© 2026 喜地咖啡 & 万物生长酒馆</footer>
 
-    <nav class="navbar">
-        <div class="logo">SEED CAFE & NATUREBAR</div>
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Menu</a>
-            <a href="#">About</a>
-            <a href="#">Message</a>
-        </div>
-    </nav>
+<script>
+// ====== 后端地址（等下我给你换成你自己的）======
+const PB_URL = "https://你的后端地址.onrender.com"; // 等下替换
+const COL = "messages";
 
-    <section class="hero">
-        <h1>Welcome to<br><span>喜地咖啡 & 万物生长酒馆</span></h1>
-        <p>but poetry, beauty, romance, love, these are what we stay alive for</p>
-    </section>
+let myNick = localStorage.getItem("myNick") || "";
 
-    <section class="message-section">
-        <h2 class="section-title">留言板</h2>
+// 加载留言
+async function loadMessages() {
+  let res = await fetch(`${PB_URL}/api/collections/${COL}/records?sort=-created`);
+  let list = await res.json();
+  let msgs = list.items || [];
+  render(msgs);
+}
 
-        <form id="msgForm">
-            <div class="form-group">
-                <label>你的昵称</label>
-                <input type="text" id="nick" placeholder="请输入昵称" required>
-            </div>
-            <div class="form-group">
-                <label>你的留言</label>
-                <textarea id="content" rows="4" placeholder="写下你的感受" required></textarea>
-            </div>
-            <button type="submit" class="submit-btn">提交留言</button>
-        </form>
+// 渲染
+function render(msgs) {
+  let container = document.getElementById("msgList");
+  container.innerHTML = "";
+  msgs.forEach(item => {
+    let isMine = item.nick === myNick;
+    let card = document.createElement("div");
+    card.className = "message-card " + (isMine ? "my-msg" : "");
+    card.innerHTML = `
+      <div class="message-author">${item.nick}</div>
+      <div class="message-date">${item.created.slice(0,10)}</div>
+      <div class="message-content">${item.content}</div>
+      <button class="del-btn" data-id="${item.id}">删除</button>
+    `;
+    container.appendChild(card);
+  });
 
-        <div class="messages-grid" id="msgList"></div>
-    </section>
+  document.querySelectorAll(".del-btn").forEach(btn => {
+    btn.onclick = async () => {
+      if (!confirm("确定删除？")) return;
+      await fetch(`${PB_URL}/api/collections/${COL}/records/${btn.dataset.id}`, {
+        method: "DELETE"
+      });
+      loadMessages();
+    };
+  });
+}
 
-    <footer>© 2026 喜地咖啡 & 万物生长酒馆</footer>
+// 提交
+document.getElementById("msgForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  let nick = document.getElementById("nick").value.trim();
+  let content = document.getElementById("content").value.trim();
+  myNick = nick;
+  localStorage.setItem("myNick", myNick);
 
-    <script>
-        // 我给你搭好的免费云端服务器
-        const API = "https://api.npoint.io/31f8c1e3a4e9d5c8f7b6";
+  await fetch(`${PB_URL}/api/collections/${COL}/records`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nick, content })
+  });
 
-        // 本地记住你的昵称，用于判断“你的留言”
-        let myNick = localStorage.getItem("myNick") || "";
+  alert("提交成功！");
+  e.target.reset();
+  loadMessages();
+});
 
-        // 加载所有留言
-        async function loadMessages() {
-            try {
-                let res = await fetch(API);
-                let data = await res.json();
-                let list = data.messages || [];
-                render(list);
-            } catch(e) {
-                alert("加载失败");
-            }
-        }
-
-        // 渲染
-        function render(list) {
-            let box = document.getElementById("msgList");
-            box.innerHTML = "";
-            list.forEach((item, i) => {
-                let isMine = item.nick === myNick;
-                let div = document.createElement("div");
-                div.className = "message-card " + (isMine ? "my-msg" : "");
-                div.innerHTML = `
-                    <div class="message-author">${item.nick}</div>
-                    <div class="message-date">${item.time}</div>
-                    <div class="message-content">${item.content}</div>
-                    <button class="del-btn" data-i="${i}">删除</button>
-                `;
-                box.appendChild(div);
-            });
-
-            // 删除事件
-            document.querySelectorAll(".del-btn").forEach(btn => {
-                btn.onclick = async () => {
-                    if (!confirm("确定删除？")) return;
-                    await deleteMsg(btn.dataset.i);
-                };
-            });
-        }
-
-        // 提交
-        document.getElementById("msgForm").addEventListener("submit", async e => {
-            e.preventDefault();
-            let nick = document.getElementById("nick").value.trim();
-            let content = document.getElementById("content").value.trim();
-
-            myNick = nick;
-            localStorage.setItem("myNick", myNick);
-
-            let time = new Date().toLocaleString();
-
-            // 提交到云端服务器
-            await fetch(API, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nick, content, time })
-            });
-
-            alert("提交成功！");
-            loadMessages();
-            e.target.reset();
-        });
-
-        // 删除
-        async function deleteMsg(index) {
-            await fetch(API, {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ index })
-            });
-            loadMessages();
-        }
-
-        window.onload = loadMessages;
-    </script>
-
+// 页面加载
+window.onload = loadMessages;
+</script>
 </body>
 </html>
