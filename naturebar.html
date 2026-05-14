@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜地咖啡&万物生长酒馆 | 留言板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', 'SimSun', serif;
+        }
+
+        body {
+            background-color: #d82626;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 4rem;
+            background-color: #d82626;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .logo {
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 1.5rem;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #ffcc00;
+        }
+
+        .hero {
+            padding: 5rem 4rem;
+            text-align: center;
+            background-color: #d82626;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .hero .highlight {
+            color: #ffffff;
+            font-family: 'SimSun', serif;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #ffffff;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .message-section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #ffcc00;
+            display: inline-block;
+            color: #ffffff;
+        }
+
+        .message-form {
+            background: rgba(255,255,255,0.05);
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            margin-bottom: 4rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            font-size: 1rem;
+            outline: none;
+            color: #ffffff;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .submit-btn {
+            background-color: #ffffff;
+            color: #d82626;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #f1f1f1;
+        }
+
+        .messages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .message-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            padding: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .message-card:hover {
+            transform: translateY(-5px);
+            border-left: 4px solid #ffcc00;
+        }
+
+        .message-author {
+            font-weight: bold;
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-family: 'SimSun', serif;
+        }
+
+        .message-date {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1rem;
+        }
+
+        .message-content {
+            color: #ffffff;
+            line-height: 1.7;
+            font-family: 'SimSun', serif;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background-color: #d82626;
+            margin-top: 4rem;
+            color: #ffffff;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-family: 'SimSun', serif;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">SEED CAFE & NATUREBAR</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Menu</a>
+            <a href="#">About</a>
+            <a href="#">Message</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Welcome to<br><span class="highlight">喜地咖啡 & 万物生长酒馆</span></h1>
+        <p>but poetry, beauty, romance, love, these are what we stay alive for</p>
+    </section>
+
+    <section class="message-section">
+        <h2 class="section-title">留言板</h2>
+
+        <form class="message-form" id="msgForm">
+            <div class="form-group">
+                <label>你的昵称</label>
+                <input type="text" id="name" placeholder="请输入你的昵称" required>
+            </div>
+            <div class="form-group">
+                <label>你的留言</label>
+                <textarea id="content" placeholder="分享你的感受..." required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">提交留言</button>
+        </form>
+
+        <div class="messages-grid" id="msgList">
+            <div class="message-card">
+                <div class="message-author">咖啡爱好者</div>
+                <div class="message-date">2025-01-01</div>
+                <div class="message-content">环境非常舒服，咖啡口感超棒，是城市里难得的自然角落。</div>
+            </div>
+            <div class="message-card">
+                <div class="message-author">自然爱好者</div>
+                <div class="message-date">2025-01-02</div>
+                <div class="message-content">很喜欢这里的氛围，绿植和灯光搭配得恰到好处，适合放松和工作。</div>
+            </div>
+            <div class="message-card">
+                <div class="message-author">开心顾客</div>
+                <div class="message-date">2025-01-03</div>
+                <div class="message-content">服务热情，饮品颜值高又好喝，一定会推荐给朋友！</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        © 2026 喜地咖啡 & 万物生长酒馆 | 保留所有权利
+    </footer>
+
+    <!-- 真正能提交留言的代码 -->
+    <script>
+        const form = document.getElementById('msgForm');
+        const msgList = document.getElementById('msgList');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const content = document.getElementById('content').value.trim();
+            
+            if (!name || !content) {
+                alert('请填写昵称和留言内容！');
+                return;
+            }
+
+            const now = new Date();
+            const dateStr = now.getFullYear() + '-' + 
+                           String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                           String(now.getDate()).padStart(2, '0');
+
+            const html = `
+                <div class="message-card">
+                    <div class="message-author">${name}</div>
+                    <div class="message-date">${dateStr}</div>
+                    <div class="message-content">${content}</div>
+                </div>
+            `;
+
+            msgList.insertAdjacentHTML('afterbegin', html);
+            form.reset();
+            alert('留言提交成功！');
+        });
+    </script>
+</body>
+</html>
