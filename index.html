@@ -18,28 +18,28 @@
             line-height: 1.6;
         }
 
+        /* 修复导航栏布局 */
         .navbar {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
+            justify-content: space-between;
             align-items: center;
-            padding: 1rem 1.5rem;
+            padding: 1.2rem 4rem;
             background-color: #d82626;
             border-bottom: 1px solid rgba(255,255,255,0.2);
-            text-align: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .logo {
             color: #ffffff;
             font-weight: 900;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-family: 'Times New Roman', serif;
         }
 
         .nav-links {
             display: flex;
-            gap: 1.2rem;
+            gap: 2.5rem;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -47,7 +47,7 @@
         .nav-links a {
             color: #ffffff;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             text-transform: uppercase;
             font-weight: 500;
         }
@@ -57,7 +57,7 @@
         }
 
         .hero {
-            padding: 3rem 1.5rem;
+            padding: 5rem 4rem;
             text-align: center;
             background-color: #d82626;
         }
@@ -75,7 +75,7 @@
         }
 
         .hero p {
-            font-size: 1rem;
+            font-size: 1.1rem;
             max-width: 700px;
             margin: 0 auto;
             color: #ffffff;
@@ -84,8 +84,8 @@
 
         .message-section {
             max-width: 1200px;
-            margin: 3rem auto;
-            padding: 0 1.5rem;
+            margin: 4rem auto;
+            padding: 0 2rem;
         }
 
         .section-title {
@@ -100,14 +100,14 @@
 
         .message-form {
             background: rgba(255,255,255,0.05);
-            padding: 1.8rem 1.5rem;
+            padding: 2.5rem;
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 6px;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
         }
 
         .form-group {
-            margin-bottom: 1.2rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
@@ -115,6 +115,7 @@
             margin-bottom: 0.6rem;
             font-weight: bold;
             color: #ffffff;
+            text-transform: uppercase;
             font-size: 0.9rem;
         }
 
@@ -139,32 +140,45 @@
             background-color: #ffffff;
             color: #d82626;
             border: none;
-            padding: 1rem 2rem;
-            width: 100%;
+            padding: 1rem 2.5rem;
             font-size: 1rem;
             font-weight: bold;
+            text-transform: uppercase;
             border-radius: 4px;
             cursor: pointer;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: #f1f1f1;
         }
 
         .messages-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
         }
 
         .message-card {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.2);
             border-radius: 6px;
-            padding: 1.8rem 1.5rem;
+            padding: 2rem;
             position: relative;
+            transition: transform 0.3s;
+        }
+
+        .message-card:hover {
+            transform: translateY(-5px);
+            border-left: 4px solid #ffcc00;
         }
 
         .message-author {
             font-weight: bold;
+            color: #ffffff;
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
+            font-family: 'SimSun', serif;
         }
 
         .message-date {
@@ -174,7 +188,9 @@
         }
 
         .message-content {
+            color: #ffffff;
             line-height: 1.7;
+            font-family: 'SimSun', serif;
         }
 
         .del-btn {
@@ -193,12 +209,12 @@
 
         footer {
             text-align: center;
-            padding: 2rem 1.5rem;
+            padding: 3rem 2rem;
             background-color: #d82626;
-            margin-top: 3rem;
+            margin-top: 4rem;
             color: #ffffff;
             border-top: 1px solid rgba(255,255,255,0.2);
-            font-size: 0.9rem;
+            font-family: 'SimSun', serif;
         }
     </style>
 </head>
@@ -222,6 +238,7 @@
     <section class="message-section">
         <h2 class="section-title">留言板</h2>
 
+        <!-- 修复表单ID -->
         <form class="message-form" id="msgForm">
             <div class="form-group">
                 <label>你的昵称</label>
@@ -296,8 +313,8 @@
             renderMsgs();
         }
 
-        // 提交留言
-        msgForm.onsubmit = async function (e) {
+        // 提交留言（修复事件绑定）
+        document.getElementById("msgForm").onsubmit = async function (e) {
             e.preventDefault();
             const nick = document.getElementById("nick").value.trim();
             const content = document.getElementById("content").value.trim();
@@ -325,7 +342,7 @@
                 body: JSON.stringify({ msgs: list })
             });
 
-            msgForm.reset();
+            this.reset();
             renderMsgs();
             alert("留言发布成功！");
         };
