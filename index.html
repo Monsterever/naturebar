@@ -68,28 +68,39 @@
 <footer>© 2026 喜地咖啡 & 万物生长酒馆</footer>
 
 <script>
-// ========== 已填入你的腾讯云环境ID ==========
+// 初始化腾讯云开发（已填入你的环境ID）
 const app = tcb.init({
   env: "naturebar-msg-d4g9g46hje6b34418"
 });
 const db = app.database();
 
-// 匿名登录
-app.auth().anonymousAuthProvider().signIn().then(() => {
-  loadMessages();
-});
+// 页面加载完成后初始化
+window.onload = async function() {
+    try {
+        // 匿名登录
+        await app.auth().anonymousAuthProvider().signIn();
+        console.log("✅ 匿名登录成功");
+        // 加载留言
+        await loadMessages();
+        // 绑定提交事件
+        bindSubmitEvent();
+    } catch (err) {
+        console.error("❌ 初始化失败：", err);
+        alert("初始化失败，请检查「匿名登录」是否开启");
+    }
+};
 
-// 加载留言
+// 加载留言列表
 async function loadMessages() {
   const res = await db.collection("messages").orderBy("createdAt", "desc").get();
   render(res.data);
 }
 
-// 渲染页面
+// 渲染留言
 function render(msgs) {
   const list = document.getElementById("msgList");
   list.innerHTML = "";
-  const uid = app.auth().currentUser?.uid;
+  const uid = app.auth().currentUser?.uid || "";
 
   msgs.forEach(item => {
     const isMine = item._openid === uid;
@@ -104,32 +115,44 @@ function render(msgs) {
     list.appendChild(card);
   });
 
-  // 删除按钮事件
+  // 绑定删除事件
   document.querySelectorAll(".del-btn").forEach(btn => {
     btn.onclick = async () => {
       if (!confirm("确定删除这条留言？")) return;
       await db.collection("messages").doc(btn.dataset.id).remove();
-      loadMessages();
+      await loadMessages();
     };
   });
 }
 
-// 提交留言
-document.getElementById("msgForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const nick = document.getElementById("nick").value.trim();
-  const content = document.getElementById("content").value.trim();
+// 绑定提交事件（确保按钮可点击）
+function bindSubmitEvent() {
+    const form = document.getElementById("msgForm");
+    form.onsubmit = async function(e) {
+        e.preventDefault();
+        const nick = document.getElementById("nick").value.trim();
+        const content = document.getElementById("content").value.trim();
 
-  await db.collection("messages").add({
-    nick,
-    content,
-    createdAt: new Date()
-  });
+        if (!nick || !content) {
+            alert("请填写昵称和留言");
+            return;
+        }
 
-  alert("提交成功！");
-  e.target.reset();
-  loadMessages();
-});
+        try {
+            await db.collection("messages").add({
+                nick,
+                content,
+                createdAt: new Date()
+            });
+            alert("✅ 提交成功！");
+            this.reset();
+            await loadMessages();
+        } catch (err) {
+            console.error("❌ 提交失败：", err);
+            alert("提交失败，请检查数据库权限是否设置为「所有用户可读，仅创建者可读写」");
+        }
+    };
+}
 </script>
 
 </body>
