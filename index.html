@@ -18,7 +18,6 @@
             line-height: 1.6;
         }
 
-        /* 手机自适应导航 */
         .navbar {
             display: flex;
             flex-wrap: wrap;
@@ -57,7 +56,6 @@
             color: #ffcc00;
         }
 
-        /* 手机端横幅自适应 */
         .hero {
             padding: 3rem 1.5rem;
             text-align: center;
@@ -100,7 +98,6 @@
             color: #ffffff;
         }
 
-        /* 表单手机适配 */
         .message-form {
             background: rgba(255,255,255,0.05);
             padding: 1.8rem 1.5rem;
@@ -156,7 +153,6 @@
             background-color: #f1f1f1;
         }
 
-        /* 手机端留言卡片自动单列 */
         .messages-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -240,23 +236,7 @@
             <button type="submit" class="submit-btn">提交留言</button>
         </form>
 
-        <div class="messages-grid" id="msgList">
-            <div class="message-card">
-                <div class="message-author">咖啡爱好者</div>
-                <div class="message-date">2025-01-01</div>
-                <div class="message-content">环境非常舒服，咖啡口感超棒，是城市里难得的自然角落。</div>
-            </div>
-            <div class="message-card">
-                <div class="message-author">自然爱好者</div>
-                <div class="message-date">2025-01-02</div>
-                <div class="message-content">很喜欢这里的氛围，绿植和灯光搭配得恰到好处，适合放松和工作。</div>
-            </div>
-            <div class="message-card">
-                <div class="message-author">开心顾客</div>
-                <div class="message-date">2025-01-03</div>
-                <div class="message-content">服务热情，饮品颜值高又好喝，一定会推荐给朋友！</div>
-            </div>
-        </div>
+        <div class="messages-grid" id="msgList"></div>
     </section>
 
     <footer>
@@ -267,34 +247,45 @@
         const form = document.getElementById('msgForm');
         const msgList = document.getElementById('msgList');
 
+        // 初始化：从本地存储读取留言
+        function loadMessages() {
+            const messages = JSON.parse(localStorage.getItem('cafeMessages')) || [];
+            msgList.innerHTML = '';
+            messages.forEach(msg => {
+                const html = `
+                <div class="message-card">
+                    <div class="message-author">${msg.name}</div>
+                    <div class="message-date">${msg.date}</div>
+                    <div class="message-content">${msg.content}</div>
+                </div>`;
+                msgList.insertAdjacentHTML('afterbegin', html);
+            });
+        }
+
+        // 提交留言并保存
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const name = document.getElementById('name').value.trim();
             const content = document.getElementById('content').value.trim();
-            
-            if (!name || !content) {
-                alert('请填写昵称和留言内容！');
-                return;
-            }
+            if (!name || !content) return alert('请填写完整信息！');
 
             const now = new Date();
-            const dateStr = now.getFullYear() + '-' + 
-                           String(now.getMonth() + 1).padStart(2, '0') + '-' + 
-                           String(now.getDate()).padStart(2, '0');
+            const date = now.getFullYear() + '-' + 
+                        String(now.getMonth()+1).padStart(2,0) + '-' + 
+                        String(now.getDate()).padStart(2,0);
 
-            const html = `
-                <div class="message-card">
-                    <div class="message-author">${name}</div>
-                    <div class="message-date">${dateStr}</div>
-                    <div class="message-content">${content}</div>
-                </div>
-            `;
+            const newMsg = { name, date, content };
+            const messages = JSON.parse(localStorage.getItem('cafeMessages')) || [];
+            messages.push(newMsg);
+            localStorage.setItem('cafeMessages', JSON.stringify(messages));
 
-            msgList.insertAdjacentHTML('afterbegin', html);
+            loadMessages();
             form.reset();
-            alert('留言提交成功！');
+            alert('留言提交成功！已永久保存～');
         });
+
+        // 页面加载时自动显示所有留言
+        window.onload = loadMessages;
     </script>
 </body>
 </html>
